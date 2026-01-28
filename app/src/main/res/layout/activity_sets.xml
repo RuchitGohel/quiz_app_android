@@ -5,20 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/back3"
+    android:background="@color/page_background"
     tools:context=".SetsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/set_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/material_dynamic_primary70" />
+        android:background="@color/page_background"
+        app:titleTextColor="@color/brand_maroon"
+        android:elevation="4dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sets"
         android:textSize="26sp"
         android:textStyle="bold"
+        android:textColor="@color/brand_maroon"
         android:padding="16dp" />
 
     <GridView
