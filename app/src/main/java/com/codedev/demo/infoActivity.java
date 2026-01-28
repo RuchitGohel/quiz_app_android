@@ -24,19 +24,24 @@ public class infoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         startTest=findViewById(R.id.startTest);
+        com.google.android.material.slider.Slider slider = findViewById(R.id.questionCountSlider);
+        final TextView countLabel = findViewById(R.id.questionCountLabel);
 
         setNo=getIntent().getIntExtra("SETNO",1);
 
-
-
+        slider.addOnChangeListener(new com.google.android.material.slider.Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@androidx.annotation.NonNull com.google.android.material.slider.Slider slider, float value, boolean fromUser) {
+                countLabel.setText("Select Number of Questions: " + (int)value);
+            }
+        });
 
 
         startTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(infoActivity.this,QuestionActivity.class);
-
-
+                intent.putExtra("QUESTION_COUNT", (int) slider.getValue());
                 startActivity(intent);
             }
         });

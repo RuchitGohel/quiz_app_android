@@ -46,8 +46,6 @@ public class SetsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        firestore=FirebaseFirestore.getInstance();
-        loadsets();
         sets_grid=findViewById(R.id.sets_gridview);
 
         loadingDialog =new Dialog(SetsActivity.this);
@@ -56,45 +54,20 @@ public class SetsActivity extends AppCompatActivity {
         loadingDialog.getWindow().setBackgroundDrawableResource(R.drawable.progress_background);
         loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         loadingDialog.show();
+        
+        loadsets();
 
 
     }
 
     public void loadsets(){
-
         setsIDs.clear();
-        firestore.collection("QUIZ").document(catList.get(selected_cat_index).getId())
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        long noOfSets=(long) documentSnapshot.get("SETS");
+        setsIDs.addAll(StaticDb.getSetsForCategory(catList.get(selected_cat_index).getId()));
+        
+        SetsAdapter adapter = new SetsAdapter(setsIDs.size());
+        sets_grid.setAdapter(adapter);
 
-                        for (int i=1;i<=noOfSets;i++)
-                        {
-                            setsIDs.add(documentSnapshot.getString("SET"+String.valueOf(i)+"_ID"));
-                        }
-
-
-
-
-                        SetsAdapter adapter = new SetsAdapter(setsIDs.size());
-                        sets_grid.setAdapter(adapter);
-
-                        loadingDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SetsActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-                        loadingDialog.dismiss();
-
-                    }
-                });
-
-
-
-
+        loadingDialog.dismiss();
     }
 
     @Override

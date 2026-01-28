@@ -91,47 +91,20 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private void getQuestionslist(){
         questionsList.clear();
 
-        firestore.collection("QUIZ").document(catList.get(selected_cat_index).getId())
-                .collection(setsIDs.get(setNo)).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Map<String, QueryDocumentSnapshot> docList=new ArrayMap<>();
-                        for(QueryDocumentSnapshot doc:queryDocumentSnapshots)
-                        {
-                            docList.put(doc.getId(),doc);
-                        }
-                        QueryDocumentSnapshot quesListDoc=docList.get("QUESTIONS_LIST");
-                        String count=quesListDoc.getString("COUNT");
-                        for (int i=0;i<Integer.valueOf(count);i++)
-                        {
-                            String quesID=quesListDoc.getString("Q"+String.valueOf(i+1)+"_ID");
+        questionsList.addAll(StaticDb.getQuestionsForSet(
+                catList.get(selected_cat_index).getId(),
+                setsIDs.get(setNo)
+        ));
 
-                            QueryDocumentSnapshot quesDoc=docList.get(quesID);
-                            questionsList.add(new Questions(
+        // Randomize and Limit
+        java.util.Collections.shuffle(questionsList);
+        int requestedCount = getIntent().getIntExtra("QUESTION_COUNT", 10);
+        if (questionsList.size() > requestedCount) {
+            questionsList = new ArrayList<>(questionsList.subList(0, requestedCount));
+        }
 
-                                    quesDoc.getString("QUESTION"),
-                                    quesDoc.getString("A"),
-                                    quesDoc.getString("B"),
-                                    quesDoc.getString("C"),
-                                    quesDoc.getString("D"),
-                                    Integer.valueOf(quesDoc.getString("ANSWER"))
-                            ));
-                        }
-                        setQuestion();
-                        loadingDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(QuestionActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-                        loadingDialog.dismiss();
-                    }
-                });
-
-
-
+        setQuestion();
+        loadingDialog.dismiss();
     }
     private void setQuestion(){
         timer.setText(String.valueOf(10));
@@ -204,6 +177,10 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             }
             incorrect++;
         }
+        
+        // Save the user's answer
+        questionsList.get(quesNum).setSelectedAns(selectedOption);
+        
         Handler handler= new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -236,6 +213,9 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("incorrect",String.valueOf(incorrect));
             unans=questionsList.size()-(score+incorrect);
             intent.putExtra("unanswered",String.valueOf(unans));
+            
+            // Pass the question list
+            intent.putExtra("QUESTION_LIST", (java.io.Serializable) questionsList);
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

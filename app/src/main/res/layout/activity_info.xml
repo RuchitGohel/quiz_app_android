@@ -75,6 +75,32 @@
                 android:textColor="@color/text_primary"
                 android:lineSpacingExtra="4dp" />
 
+            <TextView
+                android:id="@+id/questionCountLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Select Number of Questions: 10"
+                android:textSize="20sp"
+                android:textColor="@color/brand_maroon"
+                android:textStyle="bold" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/questionCountSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:valueFrom="1.0"
+                android:valueTo="10.0"
+                android:stepSize="1.0"
+                android:value="10.0"
+                app:thumbColor="@color/brand_maroon"
+                app:trackColorActive="@color/brand_maroon"
+                app:trackColorInactive="@color/brand_teal"
+                app:tickColorActive="@color/white"
+                app:tickColorInactive="@color/brand_maroon"
+                />
+
         </LinearLayout>
     </ScrollView>
 

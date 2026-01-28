@@ -40,11 +40,18 @@ public class ScoreActivity extends AppCompatActivity {
         incorrect.setText(String.valueOf(incorrect_str));
         unanswered.setText(String.valueOf(unans_str));
 
+        androidx.recyclerview.widget.RecyclerView recyclerView = findViewById(R.id.score_recycler_view);
+        java.util.List<Questions> questionsList = (java.util.List<Questions>) getIntent().getSerializableExtra("QUESTION_LIST");
+
+        if (questionsList != null) {
+            recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            ScoreAdapter adapter = new ScoreAdapter(questionsList);
+            recyclerView.setAdapter(adapter);
+        }
+
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 startActivity(new Intent(ScoreActivity.this, categoryActivity.class));
                 ScoreActivity.this.finish();
             }

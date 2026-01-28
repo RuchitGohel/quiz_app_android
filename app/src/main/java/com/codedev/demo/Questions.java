@@ -1,12 +1,13 @@
 package com.codedev.demo;
 
-public class Questions {
+public class Questions implements java.io.Serializable {
     String question;
     String optionA;
     String optionB;
     String optionC;
     String optionD;
     int correctAns;
+    int selectedAns;
 
     public Questions(String question, String optionA, String optionB, String optionC, String optionD, int correctAns) {
         this.question = question;
@@ -15,6 +16,7 @@ public class Questions {
         this.optionC = optionC;
         this.optionD = optionD;
         this.correctAns = correctAns;
+        this.selectedAns = 0; // 0 means unanswered
     }
 
     public String getQuestion() {
@@ -63,5 +65,13 @@ public class Questions {
 
     public void setCorrectAns(int correctAns) {
         this.correctAns = correctAns;
+    }
+
+    public int getSelectedAns() {
+        return selectedAns;
+    }
+
+    public void setSelectedAns(int selectedAns) {
+        this.selectedAns = selectedAns;
     }
 }

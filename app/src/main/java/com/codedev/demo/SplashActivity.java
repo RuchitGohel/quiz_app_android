@@ -25,7 +25,6 @@ public class SplashActivity extends AppCompatActivity {
     private TextView appName;
     public static List<CategoryModel>catList =new ArrayList<>();
     public static int selected_cat_index=0;
-    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,62 +38,26 @@ public class SplashActivity extends AppCompatActivity {
         Animation anim = AnimationUtils.loadAnimation(this,R.anim.myanim);
         appName.setAnimation(anim);
 
-
-        firestore =FirebaseFirestore.getInstance();
-
         Thread thread =new Thread(){
             public void run(){
-
                 try {
                     sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 loadData();
-
-
             }
         };thread.start();
-
-
-
     }
+
     private void loadData()
     {
         catList.clear();
-        firestore.collection("QUIZ").document("Categories")
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        catList.addAll(StaticDb.getAllCategories());
 
-                        if(task.isSuccessful()){
-                            DocumentSnapshot doc =task.getResult();
-
-                            if(doc.exists()){
-                                long count =(long)doc.get("COUNT");
-
-                                for (int i=1;i<=count;i++){
-                                    String catName =doc.getString("CAT"+String.valueOf(i)+"_NAME");
-                                    String catID =doc.getString("CAT"+String.valueOf(i)+"_ID");
-                                    catList.add(new CategoryModel(catID,catName));
-                                }
-
-                                Intent intent =new Intent(SplashActivity.this ,MainActivity.class);
-                                startActivity(intent);
-                                SplashActivity.this.finish();
-                            }
-                            else{
-                                Toast.makeText(SplashActivity.this,"No category document exists!",Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }
-                        else {
-                            Toast.makeText(SplashActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
+        Intent intent =new Intent(SplashActivity.this ,MainActivity.class);
+        startActivity(intent);
+        SplashActivity.this.finish();
     }
-
-
 }
