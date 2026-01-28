@@ -15,4 +15,10 @@
     <color name="material_dynamic_primary70">#4BB6E8</color>
     <color name="university_teal">#0097A7</color>
     <color name="university_maroon">#A31E22</color>
+
+    <!-- Semantic Colors (Light Mode Defaults) -->
+    <color name="page_background">#FFFFFF</color>
+    <color name="text_primary">#000000</color>
+    <color name="brand_maroon">@color/university_maroon</color>
+    <color name="brand_teal">@color/university_teal</color>
 </resources>

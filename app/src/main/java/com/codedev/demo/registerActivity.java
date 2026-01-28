@@ -24,9 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class registerActivity extends AppCompatActivity {
-    private EditText name;
     private EditText email;
-    private EditText collegeName;
     private EditText passwordacc;
     private EditText mobile;
     private Button save;
@@ -37,9 +35,7 @@ public class registerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        name = findViewById(R.id.name);
         email = findViewById(R.id.email);
-        collegeName = findViewById(R.id.collegeName);
         mobile = findViewById(R.id.mobile);
         passwordacc = findViewById(R.id.passwordacc);
         save = findViewById(R.id.save);
@@ -50,55 +46,50 @@ public class registerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String getName = name.getText().toString();
                 String getEmail = email.getText().toString();
-                String getCollegeName = collegeName.getText().toString();
                 String getMobile = mobile.getText().toString();
                 String getPassword = passwordacc.getText().toString();
 
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", getName);
                 hashMap.put("email", getEmail);
-                hashMap.put("collegeName", getCollegeName);
                 hashMap.put("mobile", getMobile);
                 hashMap.put("password", getPassword);
 
-                if (TextUtils.isEmpty(getEmail) || TextUtils.isEmpty(getPassword) || TextUtils.isEmpty(getCollegeName) || TextUtils.isEmpty(getMobile)) {
-                    Toast.makeText(registerActivity.this, "enter email and password both", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(getEmail) || TextUtils.isEmpty(getPassword) || TextUtils.isEmpty(getMobile)) {
+                    Toast.makeText(registerActivity.this, "Enter email, password and mobile", Toast.LENGTH_SHORT).show();
                 } else {
-                    regis(getEmail, getPassword);
+                    regis(getEmail, getPassword, hashMap);
                 }
-
-                FirebaseFirestore.getInstance().collection("user")
-                        .add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(registerActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
             }
 
 
-
-
-
-
-            private void regis(String getEmail, String getPassword) {
+            private void regis(String getEmail, String getPassword, final HashMap<String, Object> hashMap) {
                 auth.createUserWithEmailAndPassword(getEmail, getPassword).addOnCompleteListener(registerActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(registerActivity.this, "User Registered Successfully.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(registerActivity.this, MainActivity.class));
+                            // Only add to firestore if auth is successful
+                            FirebaseFirestore.getInstance().collection("user")
+                                    .add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                             Toast.makeText(registerActivity.this, "User Registered Successfully.", Toast.LENGTH_SHORT).show();
+                                             startActivity(new Intent(registerActivity.this, MainActivity.class));
+                                             finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(registerActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         } else {
-                            Toast.makeText(registerActivity.this, "." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            if (task.getException() instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+                                Toast.makeText(registerActivity.this, "Account with this email already exists!", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(registerActivity.this, "." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

@@ -1,23 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
+    android:background="@color/page_background"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Quiz App"
+        android:textColor="@color/brand_maroon"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Create Account"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="32sp"
+        android:layout_marginTop="8dp"
+        android:text="Welcome!"
+        android:textColor="@color/text_primary"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appTitle" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,26 +45,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="Name"
-                app:startIconDrawable="@drawable/ic_baseline_person_outline_24">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Email"
-                app:startIconDrawable="@drawable/ic_baseline_person_outline_24">
+                app:boxStrokeColor="@color/brand_teal"
+                app:hintTextColor="@color/brand_teal"
+                app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
+                app:startIconTint="@color/brand_teal">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email"
@@ -65,7 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Mobile No."
-                app:startIconDrawable="@drawable/ic_baseline_info_24">
+                app:boxStrokeColor="@color/brand_teal"
+                app:hintTextColor="@color/brand_teal"
+                app:startIconDrawable="@drawable/ic_baseline_info_24"
+                app:startIconTint="@color/brand_teal">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobile"
@@ -74,27 +81,19 @@
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="College Name"
-                app:startIconDrawable="@drawable/ic_baseline_info_24">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/collegeName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:hint="Password"
+                app:boxStrokeColor="@color/brand_teal"
+                app:hintTextColor="@color/brand_teal"
                 app:endIconMode="password_toggle"
-                app:startIconDrawable="@drawable/ic_baseline_info_24">
+                app:endIconTint="@color/brand_teal"
+                app:startIconDrawable="@drawable/ic_baseline_info_24"
+                app:startIconTint="@color/brand_teal">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordacc"
@@ -108,8 +107,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Create Account"
-                android:textSize="16sp"
-                app:cornerRadius="30dp" />
+                android:textSize="18sp"
+                android:backgroundTint="@color/brand_maroon"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
     </ScrollView>
@@ -118,13 +118,25 @@
         android:id="@+id/tvLoginHere"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Login Here"
-        android:textColor="?attr/colorPrimary"
+        android:layout_marginBottom="16dp"
+        android:text="Already have an account? Login Here"
+        android:textColor="@color/brand_teal"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/logoImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:alpha="0.8"
+        app:srcCompat="@drawable/university_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
