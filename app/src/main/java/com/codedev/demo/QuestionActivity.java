@@ -222,21 +222,15 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         int selectedOption =0;
-        switch (view.getId()){
-            case R.id.option1:
-                selectedOption=1;
-                break;
-            case R.id.option2:
-                selectedOption=2;
-                break;
-            case R.id.option3:
-                selectedOption=3;
-                break;
-            case R.id.option4:
-                selectedOption=4;
-                break;
-            default:
-                break;
+        int id = view.getId();
+        if (id == R.id.option1) {
+            selectedOption = 1;
+        } else if (id == R.id.option2) {
+            selectedOption = 2;
+        } else if (id == R.id.option3) {
+            selectedOption = 3;
+        } else if (id == R.id.option4) {
+            selectedOption = 4;
         }
         countDown.cancel();
         checkAnswer(selectedOption,view);
